@@ -155,6 +155,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Dark mode toggle logic
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  function setDarkMode(enabled) {
+    document.body.classList.toggle("dark-mode", enabled);
+    localStorage.setItem("darkMode", enabled ? "1" : "0");
+    if (darkModeToggle) darkModeToggle.textContent = enabled ? "☀️ Light Mode" : "🌙 Dark Mode";
+  }
+
+  // Initialize dark mode from localStorage or system preference
+  const savedDark = localStorage.getItem("darkMode");
+  setDarkMode(savedDark === null ? prefersDark : savedDark === "1");
+
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener("click", () => {
+      setDarkMode(!document.body.classList.contains("dark-mode"));
+    });
+  }
+
   // Initialize app
   fetchActivities();
 });
